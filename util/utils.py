@@ -69,6 +69,10 @@ def createDatabaseBackup(dbConnector: dbunit.DBConnector):
     createCSV('./backup_transactions.csv', transactions_columns, all_transactions)
 
 def restoreDatabase(dbConnector: dbunit.DBConnector):
+    """
+    This function is used to restore the database to its initial values, 
+    since they were changed in task4  
+    """
     sqlDropTransactions = '''
         DROP TABLE Transactions;
     '''

@@ -14,7 +14,7 @@ def task1(dbConnector: dbunit.DBConnector):
                 Transactions GROUP BY visitor_id
             )
         '''
-        result = dbConnector.executeQuery(selectMostRevenueCustomer)
+        result = dbConnector.executeSelectQuery(selectMostRevenueCustomer)
         checkForJustOneValue(result) 
 
         visitor_id, revenue = result[0][0], result[0][1]
@@ -40,8 +40,7 @@ def task2(dbConnector: dbunit.DBConnector):
             )
         '''
 
-        result = dbConnector.executeQuery(
-            selectDateWithMostRevenueForMobilePhones)
+        result = dbConnector.executeSelectQuery(selectDateWithMostRevenueForMobilePhones)
         checkForJustOneValue(result)
 
         datetime, max_revenue = result[0][0], result[0][1]

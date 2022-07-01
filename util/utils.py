@@ -1,5 +1,7 @@
+import sys 
+sys.path.insert(0, "..")
 from io import StringIO
-from csv import writer
+from csv import writer, reader
 import pandas as pd
 from util.xmlutils import *
 import util.dbunit as dbunit
@@ -65,3 +67,67 @@ def createDatabaseBackup(dbConnector: dbunit.DBConnector):
     
     createCSV('./backup_devices.csv', device_columns, all_devices)
     createCSV('./backup_transactions.csv', transactions_columns, all_transactions)
+
+def restoreDatabase(dbConnector: dbunit.DBConnector):
+    sqlDropTransactions = '''
+        DROP TABLE Transactions;
+    '''
+
+    sqlDropDevices = '''
+        DROP TABLE Devices;
+    '''
+
+    sqlDropCurrency = '''
+        DROP TABLE Currency;
+    '''
+
+    dbConnector.executeQuery(sqlDropTransactions)
+    dbConnector.executeQuery(sqlDropDevices)
+    dbConnector.executeQuery(sqlDropCurrency)
+
+    sqlCreateDevices = '''
+        CREATE TABLE Devices(
+            id INTEGER,
+            device_name TEXT,
+            PRIMARY KEY (id)
+        ); 
+    '''
+    
+    sqlCreateTransactions = '''
+        CREATE TABLE Transactions(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                datetime INTEGER,
+                visitor_id INTEGER,
+                device_type INTEGER,
+                revenue REAL,
+                tax REAL,
+
+                FOREIGN KEY(device_type) REFERENCES Devices(id)
+            );
+    '''
+
+    dbConnector.executeQuery(sqlCreateDevices)
+    dbConnector.executeQuery(sqlCreateTransactions)
+
+    with open('./data/backup_devices.csv') as device_file:
+        values = reader(device_file, delimiter=',', quotechar='|')
+        sqlCreateDevices = '''
+            INSERT INTO Devices(id, device_name) VALUES (?, ?); 
+        '''
+        list_values = list(values)
+        dbConnector.populateTable(sqlCreateDevices, list_values[1:])
+    
+    with open('./data/backup_transactions.csv') as device_file:
+        values = reader(device_file, delimiter=',', quotechar='|')
+        sqlCreateDevices = '''
+            INSERT INTO Transactions(id, datetime, visitor_id, device_type, revenue, tax) VALUES (?, ?, ?, ?, ?, ?); 
+        '''
+        list_values = list(values)
+        dbConnector.populateTable(sqlCreateDevices, list_values[1:])
+
+
+
+
+
+
+

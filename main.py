@@ -10,6 +10,9 @@ def main():
     print("-------TASK3-------")
     task3(dbConnector)
     task4(dbConnector)
+    
+    print("Restoring the databse ...")
+    restoreDatabase(dbConnector)
 
 if __name__ == "__main__":
     main()

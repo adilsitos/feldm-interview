@@ -28,11 +28,14 @@ class PostgresConnector:
 
 
 def importFromCSV(dbConnector: PostgresConnector, filename: str, insertQuery: str):
-    with open(filename) as csvfile:
-        values = csv.reader(csvfile, delimiter=',', quotechar='|')
+    try:
+        with open(filename) as csvfile:
+            values = csv.reader(csvfile, delimiter=',', quotechar='|')
 
-        list_values = list(values)
-        dbConnector.executeMany(insertQuery, list_values[1:])
+            list_values = list(values)
+            dbConnector.executeMany(insertQuery, list_values[1:])
+    except Exception as err:
+        print(err)
 
 def selectVisitorWithMostRevenue(dbConnector: PostgresConnector):
     try:
@@ -85,8 +88,8 @@ def main():
         INSERT INTO Transactions (id, datetime, visitor_id, device_type, revenue, tax) VALUES (%s, %s, %s, %s, %s, %s)
     '''
     
-    #importFromCSV(postgresConnector, './backup_devices.csv', sqlInsertDevices)
-    #importFromCSV(postgresConnector, './backup_transactions.csv', sqlInsertTransactions)
+    importFromCSV(postgresConnector, '../data/backup_devices.csv', sqlInsertDevices)
+    importFromCSV(postgresConnector, '../data/backup_transactions.csv', sqlInsertTransactions)
 
     selectVisitorWithMostRevenue(postgresConnector)
     selectDayWithMostRevenueForMobilePhone(postgresConnector)

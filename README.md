@@ -34,13 +34,11 @@ For a better organization the task 5 is apart from the others
 
 ## How to run?
 
-You just need to run the main file:
+For the first 4 tasks you just need to run the main file:
 
 ```
 python main.py
 ```
-
-This file will run the 4 first taks
 
 ## Task 5 
 

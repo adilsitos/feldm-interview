@@ -2,6 +2,9 @@ import util.dbunit as dbunit
 from util.utils import *
 
 def task1(dbConnector: dbunit.DBConnector):
+    """
+    Select the visitor_id and the most revenue created 
+    """
     try:
         selectMostRevenueCustomer = '''
         SELECT visitor_id, MAX(revenue_sum) as max_revenue 
@@ -15,12 +18,16 @@ def task1(dbConnector: dbunit.DBConnector):
         checkForJustOneValue(result) 
 
         visitor_id, revenue = result[0][0], result[0][1]
-        print(f'The user: {visitor_id} has the most revenue ${revenue}')
+        print(f'The user {visitor_id} has the most revenue ${revenue}')
    
     except Exception as err:
         print(err)
 
 def task2(dbConnector: dbunit.DBConnector):
+    """
+    Select the date and the most revenue created by 
+    mobile phones
+    """
     try:
         selectDateWithMostRevenueForMobilePhones = '''
             SELECT datetime, MAX(revenue_sum) as max_revenue
@@ -45,6 +52,10 @@ def task2(dbConnector: dbunit.DBConnector):
         print(err)
     
 def task3(dbConnector: dbunit.DBConnector, fileName: str = "./devicesjointransactions.csv"):
+    """
+    Perform a INNER JOIN operation between transactions and devices, 
+    using the device type and saves the result in a csv
+    """
     try:
         joinTransactionsAndDevices = '''
             SELECT 
@@ -68,6 +79,11 @@ def task3(dbConnector: dbunit.DBConnector, fileName: str = "./devicesjointransac
 
 
 def task4(dbConnector: dbunit.DBConnector):
+    """
+    Update revenue from USD to EUR using the available xml. For the 
+    dates not available in the xml, it was used the average of all 
+    available dates created in the Currency table.  
+    """
     try:
         currencies = getCurrencyList()  
         createCurrencyTable(dbConnector, currencies)  

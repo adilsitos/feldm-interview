@@ -79,6 +79,10 @@ def selectDayWithMostRevenueForMobilePhone(dbConnector: PostgresConnector):
         print(err)
 
 def main():
+    """
+    Connect to postgresql running on a container and insert all rows from 
+    the sqlite database. It can take some time running the first time
+    """
 
     postgresConnector = PostgresConnector('127.0.0.1', '5432', 'docker', 'root', 'password')
     sqlInsertDevices = '''

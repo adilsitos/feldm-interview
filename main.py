@@ -11,7 +11,7 @@ def main():
     task3(dbConnector)
     task4(dbConnector)
     
-    usr_input = input("Press enter to restore database...")
+    input("Press enter to restore database...")
     print("Restoring the database ...")
     restoreDatabase(dbConnector)
 
